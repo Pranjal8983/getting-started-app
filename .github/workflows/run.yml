@@ -19,7 +19,7 @@ jobs:
   deploy:
   
     needs: build
-    runs-on: self-hosted
+    runs-on: ubuntu-latest
     steps:
       - name: Docker Setup Compose
         uses: docker/setup-compose-action@v1.2.0
