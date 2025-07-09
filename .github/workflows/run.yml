@@ -25,4 +25,4 @@ jobs:
           aws ecr get-login-password --region ${{ secrets.AWS_REGION }} | sudo docker login --username AWS --password-stdin 836837432401.dkr.ecr.us-east-1.amazonaws.com
           sudo docker build -t getting-started .
           sudo docker tag getting-started:latest 836837432401.dkr.ecr.us-east-1.amazonaws.com/docker_image/getting-started:latest
-          sudo docker push 836837432401.dkr.ecr.us-east-1.amazonaws.com/getting-started:latest
+          sudo docker push 836837432401.dkr.ecr.us-east-1.amazonaws.com/docker_image/getting-started:latest
