@@ -26,5 +26,5 @@ jobs:
       
       - name: Compose up
         run: |
-          docker-compose up -d
+          docker compose up -d
           docker ps
