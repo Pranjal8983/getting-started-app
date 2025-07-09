@@ -33,4 +33,4 @@ jobs:
       
       - name: Compose up
         run: |
-          docker-compose up -d
+          sudo docker compose up -d
