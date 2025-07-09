@@ -20,17 +20,11 @@ jobs:
                push: true
                tags: pranjaldeka/getting-started:1
         
-          
-     
-    
   deploy:
-  
     needs: build
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-latest 
     steps:
-      - name: Docker Setup Compose
-        uses: docker/setup-compose-action@v1.2.0
-      
       - name: Compose up
         run: |
           sudo docker compose up -d
+          sudo docker ps
