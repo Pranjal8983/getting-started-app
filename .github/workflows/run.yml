@@ -1,4 +1,4 @@
-name: Docker Automation
+name: Docker Deploy
 on: workflow_dispatch
 
 jobs:
