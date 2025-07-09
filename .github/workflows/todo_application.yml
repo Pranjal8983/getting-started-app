@@ -2,7 +2,7 @@ name: TO-DO application docker
 on: workflow_dispatch
 jobs:
   build:
-    runs-on: self-hosted
+    runs-on: ubuntu-latest
     steps:
       - name: Checkout
         uses: actions/checkout@v4.2.2
@@ -26,7 +26,7 @@ jobs:
   deploy:
   
     needs: build
-    runs-on: self-hosted
+    runs-on: ubuntu-latest
     steps:
       - name: Docker Setup Compose
         uses: docker/setup-compose-action@v1.2.0
