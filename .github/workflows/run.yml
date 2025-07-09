@@ -26,3 +26,11 @@ jobs:
           sudo docker build -t getting-started .
           sudo docker tag getting-started:latest 836837432401.dkr.ecr.us-east-1.amazonaws.com/getting-started:latest
           sudo docker push 836837432401.dkr.ecr.us-east-1.amazonaws.com/getting-started:latest
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    steps:
+      - name: Compose up
+        run: |
+          sudo docker compose up -d
+          sudo docker ps
