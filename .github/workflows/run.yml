@@ -1,9 +1,9 @@
-name: Docker Deploy
+name: Deploying docker image
 on: workflow_dispatch
 
 jobs:
   build:
-    runs-on: ubuntu-latest
+    runs-on: self-hosted
     steps:
       - name: Checkout
         uses: actions/checkout@v4.2.2
@@ -11,19 +11,29 @@ jobs:
       - name: Docker Login, build
         run: |
           echo "SHORT_SHA=$(echo ${GITHUB_SHA} | cut -c1-7)" >> $GITHUB_ENV
-          echo "${{ secrets.DOCKER_PASSWORD }}" | sudo docker login -u "${{ secrets.DOCKER_USERNAME
-          }}" --password-stdin
+          echo "${{ secrets.DOCKER_PASSWORD }}" | sudo docker login -u "${{ secrets.DOCKER_USERNAME }}" --password-stdin
           sudo docker build -t ${{ secrets.DOCKER_USERNAME }}/getting-started:latest .
           sudo docker push ${{ secrets.DOCKER_USERNAME }}/getting-started
+
+      - name: Set AWS Credentials
+        uses: aws-actions/configure-aws-credentials@v4.1.0
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: ${{ secrets.AWS_REGION }}
+
+      - name: AWS ECR Push
+        run: |
+          aws ecr get-login-password --region ${{ secrets.AWS_REGION }} | sudo docker login --username AWS --password-stdin 427521931204.dkr.ecr.ap-south-1.amazonaws.com
+          sudo docker build -t getting-started .
+          sudo docker tag getting-started:latest 427521931204.dkr.ecr.ap-south-1.amazonaws.com/getting-started:latest
+          sudo docker push 427521931204.dkr.ecr.ap-south-1.amazonaws.com/getting-started:latest
     
   deploy:
-  
     needs: build
-    runs-on: ubuntu-latest
+    runs-on: self-hosted
     steps:
-      - name: Docker Setup Compose
-        uses: docker/setup-compose-action@v1.2.0
-      
       - name: Compose up
         run: |
           sudo docker compose up -d
+          sudo docker ps
